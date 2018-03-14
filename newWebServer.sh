@@ -22,9 +22,21 @@ systemctl enable proftpd
 systemctl start proftpd
 yum install -y mc
 
+cat > /etc/selinux/config
+cat <<EOT >>  /etc/selinux/config
 
-
-
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=disabled
+# SELINUXTYPE= can take one of three two values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected.
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted
+EOT
 
 wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 wget http://rpms.remirepo.net/enterprise/remi-release-7.rpm
@@ -189,4 +201,6 @@ EOT
 
 
 apachectl reload
+
+reboot #or not reboot only for selinux
 

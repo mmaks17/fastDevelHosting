@@ -200,7 +200,7 @@ AllowOverride All
 EOT
 
 
-apachectl reload
+apachectl restart
 
 reboot #or not reboot only for selinux
 

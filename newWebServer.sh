@@ -22,21 +22,8 @@ systemctl enable proftpd
 systemctl start proftpd
 yum install -y mc
 
-cat > /etc/selinux/config
-cat <<EOT >>  /etc/selinux/config
 
-# This file controls the state of SELinux on the system.
-# SELINUX= can take one of these three values:
-#     enforcing - SELinux security policy is enforced.
-#     permissive - SELinux prints warnings instead of enforcing.
-#     disabled - No SELinux policy is loaded.
-SELINUX=disabled
-# SELINUXTYPE= can take one of three two values:
-#     targeted - Targeted processes are protected,
-#     minimum - Modification of targeted policy. Only selected processes are protected.
-#     mls - Multi Level Security protection.
-SELINUXTYPE=targeted
-EOT
+
 
 wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 wget http://rpms.remirepo.net/enterprise/remi-release-7.rpm
@@ -79,6 +66,8 @@ cat <<EOT >> /etc/samba/smb.conf
         read only = no
 
 EOT
+
+
 cat <<EOT >> /etc/yum.repos.d/webmin.repo
 [Webmin]
 name=Webmin Distribution Neutral
@@ -161,7 +150,6 @@ apachectl restart
 
 
 
-
 echo "Enter Site Name / user" 
 read S
 echo $S
@@ -179,6 +167,13 @@ mkdir -p /home/$S/www
 mkdir -p /home/$S/www/public
 chown -R apache:apache /home/$S/www
 chmod -R 775 /home/$S/www
+
+
+
+echo "CREATE USER '$S'@'%' IDENTIFIED BY '***';" |  mysql -uroot -p1
+echo "GRANT USAGE ON *.* TO '$S'@'%' IDENTIFIED BY '***' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;"|  mysql -uroot -p1
+echo "CREATE DATABASE IF NOT EXISTS $S;"  |  mysql -uroot -p1
+echo "GRANT ALL PRIVILEGES ON $S.* TO '$S'@'%';"  |  mysql -uroot -p1
 
 
 cat <<EOT>>  /etc/httpd/conf.d/$S.$D.conf
@@ -201,6 +196,3 @@ EOT
 
 
 apachectl restart
-
-reboot #or not reboot only for selinux
-

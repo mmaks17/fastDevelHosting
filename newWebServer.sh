@@ -170,10 +170,10 @@ chmod -R 775 /home/$S/www
 
 
 
-echo "CREATE USER '$S'@'%' IDENTIFIED BY '***';" |  mysql -uroot -p1
-echo "GRANT USAGE ON *.* TO '$S'@'%' IDENTIFIED BY '***' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;"|  mysql -uroot -p1
-echo "CREATE DATABASE IF NOT EXISTS $S;"  |  mysql -uroot -p1
-echo "GRANT ALL PRIVILEGES ON $S.* TO '$S'@'%';"  |  mysql -uroot -p1
+echo "CREATE USER '$S'@'%' IDENTIFIED BY '***';" |  mysql -uroot -pPASSWORD
+echo "GRANT USAGE ON *.* TO '$S'@'%' IDENTIFIED BY '***' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;"|  mysql -uroot -pPASSWORD
+echo "CREATE DATABASE IF NOT EXISTS $S;"  |  mysql -uroot -pPASSWORD
+echo "GRANT ALL PRIVILEGES ON $S.* TO '$S'@'%';"  |  mysql -uroot -pPASSWORD
 
 
 cat <<EOT>>  /etc/httpd/conf.d/$S.$D.conf

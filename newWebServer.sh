@@ -180,8 +180,8 @@ cat <<EOT>>  /etc/httpd/conf.d/$S.$D.conf
 
 <VirtualHost *:80>
 DocumentRoot /home/$S/www/public
-ErrorLog /home/$S/www/error_log
-CustomLog /home/$S/www/access_log combined
+ErrorLog /home/$S/error_log
+CustomLog /home/$S/access_log combined
 ServerName $S.$D
 <Directory /home/$S/www/public>
 allow from all
